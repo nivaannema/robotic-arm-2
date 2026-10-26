@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robot Arm Control</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+
+<body>
+
+    <div class="control-panel">
+
+                                  <h2>Robot Arm Control</h2>
+
+                                  
+
+<div class="servo-control">
+<span class="servo-name">Base</span>
+<span id="baseVal" class="servo-angle">90</span>
+<input type="range" min="0" max="180" value="90" id="base" class="servo-slider">
+</div> 
+
+<div class="servo-control">
+<span class="servo-name">Shoulder</span>
+<span id="shoulderVal" class="servo-angle">90</span>
+<input type="range" min="0" max="180" value="90" id="shoulder" class="servo-slider">
+</div>
+
+<div class="servo-control">
+<span class="servo-name">Elbow</span>
+<span id="elbowVal" class="servo-angle">90</span>
+<input type="range" min="0" max="180" value="90" id="elbow" class="servo-slider">
+</div>
+
+<div class="servo-control">
+<span class="servo-name">Wrist Tilt</span>
+<span id="wristtiltVal" class="servo-angle">90</span>
+<input type="range" min="0" max="180" value="90" id="wristtilt" class="servo-slider">
+</div>
+
+<div class="servo-control">
+<span class="servo-name">Wrist Yaw</span>
+<span id="wristyawVal" class="servo-angle">90</span>
+<input type="range" min="0" max="180" value="90" id="wristyaw" class="servo-slider">
+</div>
+
+<div class="servo-control">
+<span class="servo-name">Claw</span>
+<span id="clawVal" class="servo-angle">90</span>
+<input type="range" min="0" max="180" value="90" id="claw" class="servo-slider">
+</div>
+
+    <div id="claw-coords" class="claw-coordinates">
+        Claw: X: <span id="val-x">0</span> mm | Y: <span id="val-y">0</span> mm | Z: <span id="val-z">0</span> mm
+    </div>
+
+    <div class="duration-control">
+        <label for="duration-ms">Full-range travel time (ms):</label>
+        <input type="number" id="duration-ms" min="300" max="30000" step="100" value="3000">
+        <span>Time for 0°–180°; shorter moves scale with distance.</span>
+    </div>
+
+<div class="buttons">
+<button id="homeButton" class="control-button">🏠 Home</button>
+<button id="openClawButton" class="control-button">🖐 Open Claw</button>
+<button id="closeClawButton" class="control-button">✊ Close Claw</button>
+<button id="recordButton" class="control-button">Record</button>
+<button id="stopButton" class="control-button">Stop Recording</button>
+<button id="replayButton" class="control-button">Replay</button>
+<button id="stopReplayButton" class="control-button">Stop Replay</button>
+<button id="clearButton" class="control-button">Clear Recording</button>
+
+<p id="recordingStatus">Not Recording</p>
+</div>
+
+<div id="ik-controls" class="ik-panel">
+    <h4>Inverse Kinematics (Move To Target)</h4>
+    <div class="ik-input-row">
+        <label>X: <input type="number" id ="target-input-x" value="100"></label>
+        <label>Y: <input type="number" id ="target-input-y" value="0"></label>
+        <label>Z: <input type="number" id ="target-input-z" value="200"></label>
+        <label>Pitch: <input type="number" id ="target-input-pitch" value="-90"></label>
+        <button id="btn-move-ik" class="btn-ik-move" type="button">Move Arm</button>
+    </div>
+    <div id="ik-status" class="ik-status">Status: Ready</div>
+    <div id="ik-angle-preview" class="ik-preview">
+        Target Angles: Base: <span id="prev-base">-</span>° | Shoulder: <span id="prev-shoulder">-</span>° | Elbow: <span id="prev-elbow">-</span>° | Wrist: <span id="prev-wrist">-</span>°
+    </div>
+</div>
+
+</div>
+
+<div id="arm-3d-canvas" class="arm_3d_canvas"></div>
+
+<section class="vision-panel">
+    <section class="game-controls" aria-labelledby="game-title">
+        <h2 id="game-title">Colour Game</h2>
+        <p id="game-status" role="status">
+            Show a colour card or choose a colour below.
+        </p>
+        <p>Camera detection is used unless you manually select a colour here:</p>
+        <div class="game-colour-buttons" role="group" aria-label="Manually select a game colour">
+            <button type="button" data-game-color="blue" aria-pressed="false">Blue</button>
+            <button type="button" data-game-color="yellow" aria-pressed="false">Yellow</button>
+            <button type="button" data-game-color="orange" aria-pressed="false">Orange</button>
+            <button type="button" data-game-color="green" aria-pressed="false">Green</button>
+            <button type="button" data-game-color="red" aria-pressed="false">Red</button>
+            <button type="button" data-game-color="white" aria-pressed="false">White</button>
+        </div>
+        <div class="game-buttons">
+            <button id="game-start-button" type="button">Lock Colour &amp; Start</button>
+            <button id="game-continue-button" class="game-continue-button" type="button" hidden>
+                Continue (block removed)
+            </button>
+            <button id="game-dice-roll-button" type="button" disabled>
+                Run Full Dice Sequence
+            </button>
+            <button id="game-reset-button" type="button">Reset Round</button>
+        </div>
+    </section>
+
+    <h2>Colour Card Detection</h2>
+    <p>
+        Choose a colour, then drag a box around that card to recalibrate it.
+        The selection is temporary and resets when the server resarts.
+    </p>
+
+    <div class="vision-buttons">
+        <button type="button" data-vision-color="blue">Calibrate blue</button>
+        <button type="button" data-vision-color="yellow">Calibrate yellow</button>
+        <button type="button" data-vision-color="orange">Calibrate orange</button>
+        <button type="button" data-vision-color="green">Calibrate green</button>
+        <button type="button" data-vision-color="red">Calibrate red</button>
+        <button type="button" data-vision-color="white">Calibrate white</button>
+    </div>
+
+    <button id="vision-mode-button" type="button">
+        Show detection boxes
+    </button>
+
+    <p id="vision-status" role="status">
+        Starting camera feed...
+    </p>
+
+    <div id="vision-frame">
+        <img id="vision-feed" src="/vision_feed" alt="Live colour camera feed">
+        <div id="vision-selection"></div>
+    </div>
+</section>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>

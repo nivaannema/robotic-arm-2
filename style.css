@@ -1,0 +1,323 @@
+.control-panel {
+    background-color: black;
+    color: orange;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    padding: 40px;
+    border-radius: 15px;
+}
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 85vh;
+}
+
+.servo-slider {
+    width: 500px;
+    margin-bottom: 10px;
+}
+
+.servo-control {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.servo-name {
+    width: 100px;
+}
+.servo-angle {
+    display: inline-block;
+    width: 45px;
+    text-align: right;
+}
+
+.buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+}
+.control-button {
+    background-color: greenyellow;
+    color: black;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 16px;
+}
+.camera-container {
+    margin-bottom: 25px;
+}
+.camera-feed {
+    width: 100px;
+    max-width: 100%;
+    display: block;
+}
+.vision-container {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.vision-panel {
+    display: flex;
+    flex-direction: column;
+}
+
+.vision-feed {
+    width: 400px;
+    max-width: 100%;
+    display: block;
+    height: 300px;
+    object-fit: contain;
+    border: 1px solid #333;
+}
+
+.target-info {
+    margin-top: 20px;
+}
+.visionfeed {
+    width: 400px;
+    max-width: 100%;
+    display: block;
+    height: 300px;
+    object-fit: contain;
+    border: 1px solid #333;
+}
+.ik-panel {
+    margin-top: 15px;
+    padding: 12px;
+    border: 1px solid #444;
+    border-radius: 6px;
+    background: rgba(20, 20, 20, 0.8);
+}
+.ik-panel h4 {
+    margin: 0 0 10px 0;
+    color: #00ffcc;
+}
+.ik-input-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+    align-items: center;
+}
+.ik-input-row label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.ik-input-row input[type="number"] {
+    width: 60px;
+    background: #222;
+    color: #fff;
+    border: 1px solid #555;
+    border-radius: 4px;
+    padding: 3px 6px;
+}
+.ik-input-row input#target-input-pitch {
+    width: 50px;
+}
+.btn-ik-move {
+    padding: 4px 12px;
+    background: #00ffcc;
+    color: #111;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+}
+.btn-ik-move:hover {
+    opacity: 0.85;
+}
+.ik-status {
+    font-size: 13px;
+    color: #aaa;
+}
+.ik-preview {
+    margin-top: 8px;
+    font-family: monospace;
+    font-size: 13px;
+    color: #ffaa00;
+    display: none;
+}
+.claw-coordinates {
+    font-family: monospace;
+    font-size: 14px;
+    background: rgba(0,0,0,0.7);
+    color: #00ffcc;
+    padding: 8px 12px;
+    border-radius: 6px;
+    width: fit-content;
+}
+.duration-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 12px;
+    color: #00ffcc;
+}
+.duration-control input {
+    width: 100px;
+    padding: 6px;
+    background: #222;
+    color: #fff;
+    border: 1px solid #555;
+    border-radius: 4px;
+}
+.duration-control span {
+    color: #aaa;
+    font-size: 12px;
+}
+.arm_3d_canvas {
+    width: 100%;
+    max-width: 500px;
+    height: 400px;
+    background: #111;
+}
+.vision-panel {
+    width: min(900px, calc(100% - 32px));
+    margin: 24px auto;
+    padding: 20px;
+    box-sizing: border-box;
+    background: #111;
+    color: #f0a040;
+    border: 1px solid #444;
+    border-radius: 12px;
+    font-family: Arial, sans-serif;
+}
+.vision-panel h2 {
+    margin-top: 0;
+}
+.game-controls {
+    margin-bottom: 20px;
+    padding: 16px;
+    border: 1px solid #444;
+    border-radius: 8px;
+    background: #191919;
+}
+.game-controls h2 {
+    color: #00ffcc;
+}
+.game-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.game-colour-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+.game-colour-buttons button[aria-pressed="true"] {
+    border-color: #ffe066;
+    background: #8a6d00;
+    color: #fff;
+    box-shadow: 0 0 0 2px rgba(255, 224, 102, 0.25);
+}
+.game-colour-buttons button:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+}
+.game-continue-button {
+    background: #176b35 !important;
+    border-color: #73e69a !important;
+    color: #fff !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    padding: 12px 22px !important;
+}
+.game-continue-button[hidden] {
+    display: none;
+}
+.game-continue-button:hover {
+    background: #218c49 !important;
+}
+.vision-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+.vision-panel button {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+#vision-status {
+    min-height: 1.4em;
+    color: #00ffcc;
+}
+#vision-frame {
+    position: relative;
+    width: 100%;
+    line-height: 0;
+    cursor: crosshair;
+    touch-action: none;
+}
+#vision-feed {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+#vision-selection {
+    position: absolute;
+    display: none;
+    box-sizing: border-box;
+    border: 2px solid #00ffcc;
+    background: rgba(0, 255, 204, 0.18);
+    pointer-events: none;
+}
+
+.control-button,
+.vision-panel button,
+.btn-ik-move {
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 10px 16px;
+    border: 1px solid #00ffcc;
+    border-radius: 8px;
+    background: #16322f;
+    color: #eafffb;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.2;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease,
+        color 0.15s ease, transform 0.15s ease;
+}
+
+.control-button:hover,
+.vision-panel button:hover,
+.btn-ik-move:hover {
+    border-color: #7fffe6;
+    background: #00a98b;
+    color: #071410;
+    transform: translateY(-1px);
+}
+
+.control-button:active,
+.vision-panel button:active,
+.btn-ik-move:active {
+    transform: translateY(0);
+}
+
+.control-button:focus-visible,
+.vision-panel button:focus-visible,
+.btn-ik-move:focus-visible {
+    outline: 3px solid rgba(0, 255, 204, 0.45);
+    outline-offset: 2px;
+}
+
+.buttons {
+    flex-wrap: wrap;
+}
+
+.vision-buttons button {
+    text-transform: capitalize;
+}
